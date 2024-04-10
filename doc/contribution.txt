@@ -1,0 +1,21 @@
+1.	Sumeet 
+Till now> Data types and Identifiers
+
+2.	Rohan
+
+Till now> Variable Declaration and Loops
+
+
+3.	Akash 
+
+Till now > Terminators and Conditionals
+
+
+4.	Sadhanand 
+
+Till now > Operators and print
+
+We have all worked on the grammar together and made the terminal and non-terminal rules. 
+
+For the final milestone we plan on implementing this grammar by building a compiler along with the lexical analyzer and parser. 
+ 
