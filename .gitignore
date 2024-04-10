@@ -1,0 +1,59 @@
+# Custom Attribute
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Dependency Directories
+node_modules/
+npm-debug.log
+
+# dot env
+.env
+
+# logs and databased
+/logs/
+*.log
+*.sql
+*.sqlite
+*.sqlite3
+*.db
+
+
+# VS_CODE
+.vscode/*.code-workspace
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Dependency directories
+/.bundle/
+
+# Build output
+/build/
+/dist/
+/out/
+
+# Compiled Files
+*.class
+*.war
+*.jar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.gz
+*.bz2
+*.7z
+*.tgz
+
+# Compiled binaries
+*.exe
+*.dll
+*.so
+*.dylib
+
+# python checkpoints
+.ipynb_checkpoints
