@@ -7,3 +7,17 @@ program(t_program(Program)) -->['begin'], block(Program), ['end'].
 block(t_blk(K)) --> ['{'], block_section(K), ['}']. 
 block_section(t_blk(K, L)) --> statements(K), block_section(L).
 block_section(t_blk(K)) --> statements(K).
+
+
+%to process different types of statement
+statements(t_stms(Statement)) --> declaration(Statement), [;].
+statements(t_stms(Statement)) --> assignment(Statement), [;].
+statements(t_stms(Statement)) --> expression(Statement), [;].
+statements(t_stms(Statement)) --> boolean(Statement), [;].
+statements(t_stms(Statement)) --> printstatements(Statement), [;].
+statements(t_stms(Statement)) --> ifcondition(Statement).
+statements(t_stms(Statement)) --> ternarycondition(Statement), [;].
+statements(t_stms(Statement)) --> forloop(Statement).
+statements(t_stms(Statement)) --> whileloop(Statement).
+statements(t_stms(Statement)) --> forrange(Statement).
+statements(t_stms(Statement)) --> iterator(Statement), [;].
