@@ -21,3 +21,10 @@ statements(t_stms(Statement)) --> forloop(Statement).
 statements(t_stms(Statement)) --> whileloop(Statement).
 statements(t_stms(Statement)) --> forrange(Statement).
 statements(t_stms(Statement)) --> iterator(Statement), [;].
+
+%to process var declaration
+declaration(t_decint(int, X, Y)) --> ['int'], identifier(X), ['='], expression(Y).
+declaration(t_decstr(string, X, Y)) --> ['string'], identifier(X), ['='], string(Y).
+declaration(t_decbool(bool, X, true)) --> ['bool'], identifier(X), [=], ['true'].
+declaration(t_decbool(bool, X, false)) --> ['bool'], identifier(X), [=], ['false'].
+declaration(t_declare(X, Y)) --> type(X), identifier(Y).
