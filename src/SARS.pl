@@ -28,3 +28,13 @@ declaration(t_decstr(string, X, Y)) --> ['string'], identifier(X), ['='], string
 declaration(t_decbool(bool, X, true)) --> ['bool'], identifier(X), [=], ['true'].
 declaration(t_decbool(bool, X, false)) --> ['bool'], identifier(X), [=], ['false'].
 declaration(t_declare(X, Y)) --> type(X), identifier(Y).
+
+
+%to process assignment operations
+assignment(t_assignmnt(X, Y)) --> identifier(X), ['='], expression(Y).
+assignment(t_assignmnt(X, Y)) --> identifier(X), ['='], boolean(Y).
+
+%to process datatype
+type(int) --> ['int'].
+type(string) --> ['string'].
+type(bool) --> ['bool'].
