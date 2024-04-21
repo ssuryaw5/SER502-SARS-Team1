@@ -14,7 +14,7 @@ statements(t_stms(Statement)) --> declaration(Statement), [;].
 statements(t_stms(Statement)) --> assignment(Statement), [;].
 statements(t_stms(Statement)) --> expression(Statement), [;].
 statements(t_stms(Statement)) --> boolean(Statement), [;].
-statements(t_stms(Statement)) --> printstatements(Statement), [;].
+statements(t_stms(Statement)) --> print(Statement), [;].
 statements(t_stms(Statement)) --> ifcondition(Statement).
 statements(t_stms(Statement)) --> ternarycondition(Statement), [;].
 statements(t_stms(Statement)) --> forloop(Statement).
@@ -38,3 +38,18 @@ assignment(t_assignmnt(X, Y)) --> identifier(X), ['='], boolean(Y).
 type(int) --> ['int'].
 type(string) --> ['string'].
 type(bool) --> ['bool'].
+
+%to parse whileloop
+whileloop(t_whileloop(A, B)) --> ['while'], ['('], (condition(A);boolean(A)), [')'], block(B).
+
+%to parse forloop
+forloop(t_forloop(W, X, Y, Z)) --> ['for'], ['('], declaration(W), [';'], (condition(X);boolean(X)), [';'], iterator(Y), [')'], block(Z).
+forloop(t_forloop(W, X, Y, Z)) --> ['for'], ['('], declaration(W), [';'], (condition(X);boolean(X)), [';'], assignment(Y), [')'], block(Z).
+forloop(t_forloop(W, X, Y, Z)) --> ['for'], ['('], assignment(W), [';'], (condition(X);boolean(X)), [';'], iterator(Y), [')'], block(Z).
+forloop(t_forloop(W, X, Y, Z)) --> ['for'], ['('], assignment(W), [';'], (condition(X);boolean(X)), [';'], expression(Y), [')'], block(Z).
+
+%to parse for_in_range
+forrange(t_for_in_range(A, B, C, D)) --> ['for'], identifier(A), ['in'], ['range'], ['('], num(B), [':'], num(C), [')'], block(D).
+forrange(t_for_in_range(A, B, C, D)) --> ['for'], identifier(A), ['in'], ['range'], ['('], identifier(B), [':'], identifier(C), [')'], block(D).
+forrange(t_for_in_range(A, B, C, D)) --> ['for'], identifier(A), ['in'], ['range'], ['('], num(B), [':'], identifier(C), [')'], block(D).
+forrange(t_for_in_range(A, B, C, D)) --> ['for'], identifier(A), ['in'], ['range'], ['('], identifier(B), [':'], num(C), [')'], block(D).
