@@ -98,3 +98,28 @@ term(t_div(X, Y)) --> term(X), ['/'], term(Y).
 term(X) --> ['('], expression(X), [')'].
 term(X) --> num(X).
 term(X) --> identifier(X).
+
+%to parse unary increment and decrement operation
+iterator(t_incre(X)) --> identifier(X), ['+'], ['+'] .
+iterator(t_decre(X)) --> identifier(X), ['-'], ['-'].
+
+%to parse number, identifier, and string
+num(t_num(Y)) --> [Y], {number(Y)}.
+identifier(identifier(Y)) --> [Y], {atom(Y)}.
+string(Y) --> onlystring(Y).
+onlystring(t_str(Y)) --> [Y], {atom(Y)}.
+
+check_type(Val, Temp) :- string(Val), Temp = string.
+check_type(Val, Temp) :- integer(Val), Temp = int.
+check_type(Val, Temp) :- (Val = true ; Val = false), Temp = bool.
+
+not(true, false).
+not(false, true).
+
+and(false, _, false).
+and(_, false, false).
+and(true, true, true).
+
+or(true, _, true).
+or(_, true, true).
+or(false, false, false).
