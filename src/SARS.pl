@@ -53,3 +53,26 @@ forrange(t_for_in_range(A, B, C, D)) --> ['for'], identifier(A), ['in'], ['range
 forrange(t_for_in_range(A, B, C, D)) --> ['for'], identifier(A), ['in'], ['range'], ['('], identifier(B), [':'], identifier(C), [')'], block(D).
 forrange(t_for_in_range(A, B, C, D)) --> ['for'], identifier(A), ['in'], ['range'], ['('], num(B), [':'], identifier(C), [')'], block(D).
 forrange(t_for_in_range(A, B, C, D)) --> ['for'], identifier(A), ['in'], ['range'], ['('], identifier(B), [':'], num(C), [')'], block(D).
+
+%to parse if condition
+ifcondition(t_if_condition(A, B)) --> ['if'], ['('], (condition(A);boolean(A)), [')'], block(B).
+ifcondition(t_if_condition(A, B, C)) --> ['if'], ['('], (condition(A);boolean(A)), [')'], block(B), ['else'], block(C).
+
+%to parse ternary condition
+ternarycondition(t_ternary_condition(A, B, C)) --> (condition(A);boolean(A)), ['?'], statements(B), [':'], statements(C).
+
+%to parse the boolean expression 
+boolean(true) --> ['true'].
+boolean(false) --> ['false'].
+boolean(t_bool_NOT(X)) --> ['not'],['('], boolean(X), [')'].
+boolean(t_bool_NOT(X)) --> ['not'],['('], condition(X), [')'].
+boolean(t_bool_AND(X, Y)) --> boolean(X), ['and'], boolean(Y).
+boolean(t_bool_AND(X, Y)) --> condition(X), ['and'], condition(Y).
+boolean(t_bool_OR(X, Y)) --> boolean(X), ['or'], boolean(Y).
+boolean(t_bool_OR(X, Y)) --> condition(X), ['or'], condition(Y).
+
+%to parse print statements
+print(t_print(X)) --> ['print'], identifier(X).
+print(t_print(X)) --> ['print'], num(X).
+print(t_print(X)) --> ['print'], string(X).
+
