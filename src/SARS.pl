@@ -76,3 +76,25 @@ print(t_print(X)) --> ['print'], identifier(X).
 print(t_print(X)) --> ['print'], num(X).
 print(t_print(X)) --> ['print'], string(X).
 
+%to parse condition checks
+condition(t_condition(X, Y, Z)) --> expression(X), compareoperator(Y), expression(Z).
+condition(t_condition(X, Y, Z)) --> string(X), compareoperator(Y), string(Z).
+condition(t_condition(X, Y, Z)) --> identifier(X), compareoperator(Y), string(Z).
+
+%to parse comparison operator
+compareoperator(==) --> ['=='].
+compareoperator('!=') --> ['!='].
+compareoperator(>) --> ['>'].
+compareoperator(<) --> ['<'].
+compareoperator(>=) --> ['>='].
+compareoperator(<=) --> ['<='].
+
+%to parse addition ,subtraction,multiplication and division
+expression(t_add(X, Y)) --> expression(X), ['+'], term(Y).
+expression(t_sub(X, Y)) --> expression(X), ['-'], term(Y).
+expression(X) --> term(X).
+term(t_mult(X, Y)) --> term(X), ['*'], term(Y).
+term(t_div(X, Y)) --> term(X), ['/'], term(Y).
+term(X) --> ['('], expression(X), [')'].
+term(X) --> num(X).
+term(X) --> identifier(X).
