@@ -123,3 +123,21 @@ and(true, true, true).
 or(true, _, true).
 or(_, true, true).
 or(false, false, false).
+
+%lookup predicate to find the corresponding values from the States
+
+lookup(Identifier, [(Category, Identifier, P_holder)|], P_holder).
+lookup(Identifier, [_|Tail], P_holder) :- 
+    lookup(Identifier, Tail, P_holder).
+
+lookup_category(Identifier, [_|Tail], P_holder) :- 
+    lookup_category(Identifier, Tail, P_holder).
+
+lookup_category(Identifier, [(Category,Identifier,X)|], Category).
+
+%update predicate to update the value of  identifier
+
+update(Category, Identifier, Val, [], [(Category, Identifier, Val)]).
+update(Category, Identifier, Val, [(Category, Identifier, _)|Tail], [(Category, Identifier, Val)|Tail]).
+update(Category, Identifier, Val, [Head|Tail], [Head|Rest]) :- 
+    update(Category, Identifier, Val, Tail, Rest).
