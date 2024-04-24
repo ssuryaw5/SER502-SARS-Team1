@@ -186,3 +186,52 @@ eval_declare(t_decbool(bool, Y, true), State, New_State):-
 eval_declare(t_decbool(bool, Y, false), State, New_State):- 
     eval_tree(Y, Identifier),
     update(bool, Identifier, false, State, New_State).
+
+    %to evaluate assignment operations
+eval_assign(t_assignmnt(X, Y), State, New_State) :- 
+    eval_expr(Y, State, S1, Val),
+    check_type(Val, T),
+    eval_tree(X, Identifier),
+    lookup_category(Identifier, S1, T1),
+    T =@= T1,
+    update(T, Identifier, Val, S1, New_State).
+eval_assign(t_assignmnt(X, Y), State, New_State) :- 
+    eval_str(Y, State, State, Val),
+    check_type(Val, T),
+    eval_tree(X, Identifier),
+    lookup_category(Identifier, State, T1),
+    T =@= T1,
+    update(T, Identifier, Val, State, New_State).
+eval_assign(t_assignmnt(X, Y), State, New_State) :- 
+   eval_bool(Y, State, State, Val),
+    check_type(Val, T),
+    eval_tree(X, Identifier),
+   lookup_category(Identifier, State, T1),
+    T =@= T1,
+    update(T, Identifier, Val, State, New_State).
+
+
+
+%to evaluate boolean conditions
+eval_bool(true, _Env1, _NewEnv, true).
+eval_bool(false, _Env1, _NewEnv,false).
+eval_bool(t_bool_NOT(B), State, New_State, Val) :- 
+    (eval_bool(B, State, New_State, V1);eval_cond(B, State, New_State, V1)), 
+    not(V1, V2), 
+    Val = V2.
+eval_bool(t_bool_AND(X, Y), State, New_State, Val) :- 
+    eval_bool(X, State, New_State, V1),
+    eval_bool(Y, State, New_State, V2),
+    and(V1, V2, Val).
+eval_bool(t_bool_AND(X, Y), State, New_State, Val) :- 
+    eval_cond(X, State, New_State, V1),
+    eval_cond(Y, State, New_State, V2), 
+    and(V1, V2, Val).
+eval_bool(t_bool_OR(X, Y), State, New_State, Val) :- 
+    eval_bool(X, State, New_State, V1),
+    eval_bool(Y, State, New_State, V2),
+    or(V1, V2, Val).
+eval_bool(t_bool_OR(X, Y), State, New_State, Val) :- 
+    eval_cond(X, State, New_State, V1),
+    eval_cond(Y, State, New_State, V2),
+    or(V1, V2, Val)
