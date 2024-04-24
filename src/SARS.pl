@@ -141,3 +141,48 @@ update(Category, Identifier, Val, [], [(Category, Identifier, Val)]).
 update(Category, Identifier, Val, [(Category, Identifier, _)|Tail], [(Category, Identifier, Val)|Tail]).
 update(Category, Identifier, Val, [Head|Tail], [Head|Rest]) :- 
     update(Category, Identifier, Val, Tail, Rest).
+
+%to evaluate program
+eval_program(t_program(Program), Final_State) :- 
+    eval_blk(Program, [], Final_State), !.
+
+%to evaluate different blocks
+eval_blk(t_blk(K), State, Final_State) :- 
+    eval_blk_section(K, State, Final_State).
+eval_blk_section(t_blk(K, L), State, Final_State) :- 
+    eval_stms(K, State, S1), 
+    eval_blk_section(L, S1, Final_State).
+eval_blk_section(t_blk(K), State, Final_State) :- 
+    eval_stms(K, State, Final_State).
+
+%to evaluate different statements
+eval_stms(t_stms(Statement), State, Final_State) :- 
+    eval_declare(Statement, State, Final_State);
+    eval_assign(Statement, State, Final_State);
+    eval_bool(Statement, State, Final_State, _Val);
+    eval_print(Statement, State, Final_State).
+    %eval_if(Statement, State, Final_State);
+    %eval_while(Statement, State, Final_State);
+    %eval_for_loop(Statement, State, Final_State);
+    %eval_for_in_range(Statement, State, Final_State);
+    %eval_ternary_cond(Statement, State, Final_State);
+    %eval_iterate(Statement, State, Final_State).
+
+%to evaluate different types of declarations
+eval_declare(t_declare(X, Y), State, New_State):- 
+    eval_tree(Y, Identifier),
+    update(X, Identifier, _, State, New_State).
+eval_declare(t_decint(int, Y, Z), State, New_State):- 
+    eval_tree(Y, Identifier),
+    eval_expr(Z, State, S1, Val),
+    update(int, Identifier, Val, S1, New_State).
+eval_declare(t_decstr(string, Y, Z), State, New_State):- 
+    eval_tree(Y, Identifier),
+    eval_str(Z, State, NewEnv1, Val),
+    update(string, Identifier, Val, NewEnv1, New_State).
+eval_declare(t_decbool(bool, Y, true), State, New_State):- 
+    eval_tree(Y, Identifier),
+    update(bool, Identifier, true, State, New_State).
+eval_declare(t_decbool(bool, Y, false), State, New_State):- 
+    eval_tree(Y, Identifier),
+    update(bool, Identifier, false, State, New_State).
