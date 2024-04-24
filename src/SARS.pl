@@ -234,4 +234,96 @@ eval_bool(t_bool_OR(X, Y), State, New_State, Val) :-
 eval_bool(t_bool_OR(X, Y), State, New_State, Val) :- 
     eval_cond(X, State, New_State, V1),
     eval_cond(Y, State, New_State, V2),
-    or(V1, V2, Val)
+    or(V1, V2, Val).
+
+%to evaluate conditional operations
+eval_cond(t_condition(X, ==, Y), State, New_State, Val) :- 
+    eval_expr(X, State, New_State, V1),
+    eval_expr(Y, State, New_State, V2),
+    (( V1 =:= V2, Val = true); ( \+(V1 =:= V2), Val = false)).
+eval_cond(t_condition(X, '!=', Y), State, New_State, Val) :- 
+    eval_expr(X, State, New_State, V1),
+    eval_expr(Y, State, New_State, V2),
+    (( V1 =\= V2, Val = true);( \+(V1 =\= V2), Val = false)).
+eval_cond(t_condition(X, '>', Y), State, New_State, Val) :-
+    eval_expr(X, State, New_State, V1),
+    eval_expr(Y, State, New_State, V2),
+    (( V1 > V2, Val = true);( \+(V1 > V2), Val = false)).
+eval_cond(t_condition(X, '<', Y), State, New_State, Val) :- 
+    eval_expr(X, State, New_State, V1),
+    eval_expr(Y, State, New_State, V2),
+    (( V1 < V2, Val = true);( \+(V1 < V2), Val = false)).
+eval_cond(t_condition(X, '>=', Y), State, New_State, Val) :- 
+    eval_expr(X, State, New_State, V1),
+    eval_expr(Y, State, New_State, V2),
+    (( V1 >= V2, Val = true);( \+(V1 >= V2), Val = false)).
+eval_cond(t_condition(X, '<=', Y), State, New_State, Val) :- 
+    eval_expr(X, State, New_State, V1),
+    eval_expr(Y, State, New_State, V2),
+    (( V1 =< V2, Val = true);( \+(V1 =< V2), Val = false)).
+eval_cond(t_condition(X, ==, Y), State, New_State, Val) :- 
+    eval_str(X, State, New_State, V1),
+    eval_str(Y, State, New_State, V2),
+    ((V1 = V2, Val = true);(\+(V1 = V2), Val = false)).
+eval_cond(t_condition(X,'!=',Y), State, New_State, Val) :-
+    eval_str(X, State, New_State, V1),
+    eval_str(Y, State, New_State, V2),
+    ((V1 = V2, Val = false);(\+(V1 = V2), Val = true)).
+eval_cond(t_condition(X,'>',Y), State, New_State,_Val) :- 
+    eval_str(X, State, New_State,_V1),
+    eval_str(Y, State, New_State,_V2),
+    write("Operation not allowed").
+eval_cond(t_condition(X,'<',Y), State, New_State,_Val) :- 
+    eval_str(X, State, New_State,_V1),
+    eval_str(Y, State, New_State,_V2),
+    write("Operation not allowed").
+eval_cond(t_condition(X,'>=',Y), State, New_State,_Val) :- 
+    eval_str(X, State, New_State,_V1),
+    eval_str(Y, State, New_State,_V2),
+    write("Operation not allowed").
+eval_cond(t_condition(X,'<=',Y), State, New_State,_Val) :- 
+    eval_str(X, State, New_State,_V1),
+    eval_str(Y, State, New_State,_V2),
+    write("Operation not allowed").
+eval_cond(t_condition(X,==,Y), State, New_State, Val) :-
+    eval_tree(X,Identifier),
+    lookup(Identifier, State, V1),
+    check_type(V1,T),
+    T=string,
+    eval_str(Y, State, New_State, V2),
+    ((V1 =@= V2, Val = true);(\+(V1 =@= V2), Val = false)).
+eval_cond(t_condition(X,'!=',Y), State, New_State, Val) :- 
+    eval_tree(X,Identifier),
+    lookup(Identifier, State, V1),
+    check_type(V1,T),
+    T=string,
+    eval_str(Y, State, New_State, V2),
+    ((V1 = V2, Val = false);(\+(V1 = V2), Val = true)).
+eval_cond(t_condition(X,'>',Y), State, New_State,_Val) :- 
+    eval_tree(X,Identifier),
+    lookup(Identifier, State, V1),
+    check_type(V1,T),
+    T=string,
+    eval_str(Y, State, New_State,_V2),
+    write("Operation not allowed").
+eval_cond(t_condition(X,'<',Y), State, New_State,_Val) :- 
+    eval_tree(X,Identifier),
+    lookup(Identifier, State, V1),
+    check_type(V1,T),
+    T=string,
+    eval_str(Y, State, New_State,_V2),
+    write("Operation not allowed").
+eval_cond(t_condition(X,'>=',Y), State, New_State,_Val) :- 
+    eval_tree(X,Identifier),
+    lookup(Identifier, State, V1),
+    check_type(V1,T),
+    T=string,
+    eval_str(Y, State, New_State,_V2),
+    write("Operation not allowed").
+eval_cond(t_condition(X,'<=',Y), State, New_State,_Val) :- 
+    eval_tree(X,Identifier),
+    lookup(Identifier, State, V1),
+    check_type(V1,T),
+    T=string,
+    eval_str(Y, State, New_State,_V2),
+    write("Operation not allowed").
