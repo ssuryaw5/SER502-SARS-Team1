@@ -1,3 +1,16 @@
+sars(Lexername, Filename) :-
+    process_create(path('python3.9'), [Lexername, Filename], [stdout(pipe(In))]),
+    read_string(In, _, X),
+    term_to_atom(Y, X),
+    write('SARS Programming Language v1'), nl,
+    write('SER 502 - Team 1'), nl,
+    write('@Authors - Akash Rana, Sumeet Suryawanshi, Rohan Mathur, Sadanand Srinivasan'), nl, nl,
+    program(Tree, Y, []),
+    write('Parsing and Compiling in process......'), write(Filename), nl, nl,
+    write('Tokens:'), nl, write(Y),nl, nl,
+    write('Parsed Tree:'), nl, write(Tree),nl, nl, write('result:'), nl,
+    eval_program(Tree, _).
+
 :- table boolean/3, expression/3, term/3.
 
 %to Process the program and parse
@@ -160,13 +173,13 @@ eval_stms(t_stms(Statement), State, Final_State) :-
     eval_declare(Statement, State, Final_State);
     eval_assign(Statement, State, Final_State);
     eval_bool(Statement, State, Final_State, _Val);
-    eval_print(Statement, State, Final_State).
-    %eval_if(Statement, State, Final_State);
-    %eval_while(Statement, State, Final_State);
-    %eval_for_loop(Statement, State, Final_State);
-    %eval_for_in_range(Statement, State, Final_State);
-    %eval_ternary_cond(Statement, State, Final_State);
-    %eval_iterate(Statement, State, Final_State).
+    eval_print(Statement, State, Final_State);
+    eval_if(Statement, State, Final_State);
+    eval_while(Statement, State, Final_State);
+    eval_for_loop(Statement, State, Final_State);
+    eval_for_in_range(Statement, State, Final_State);
+    eval_ternary_cond(Statement, State, Final_State);
+    eval_iterate(Statement, State, Final_State).
 
 %to evaluate different types of declarations
 eval_declare(t_declare(X, Y), State, New_State):- 
