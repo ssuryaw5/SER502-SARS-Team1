@@ -378,3 +378,52 @@ eval_while(t_whileloop(X,Y), State,Final_State):-
     eval_while(t_whileloop(X,Y), NewEnv1,Final_State).
 eval_while(t_whileloop(X,_Y), State, State) :- 
     eval_cond(X, State, State,false).
+
+%to evaluate forloops
+eval_for_loop(t_forloop(X,Y,Z,W), State,Final_State):- 
+    eval_declare(X, State, New_State),
+    loops(Y,Z,W, New_State,Final_State).
+eval_for_loop(t_forloop(X,Y,Z,W), State,Final_State):- 
+    eval_assign(X, State, New_State),
+    loops(Y,Z,W, New_State,Final_State).
+loops(X,Y,Z, State,Final_State) :- 
+    eval_cond(X, State, State,true),
+    eval_blk(Z, State, New_State),
+    (eval_iterate(Y, New_State, NewEnv1);eval_expr(Y, New_State, NewEnv1)),
+    loops(X,Y,Z, NewEnv1,Final_State).
+loops(X,_Y,_Z, State, State) :- 
+    eval_cond(X, State, State,false).
+loops(X,Y,Z, State,Final_State) :- 
+    eval_bool(X, State, State,true),
+    eval_blk(Z, State, New_State),
+    (eval_iterate(Y, New_State, NewEnv1);eval_expr(Y, New_State, NewEnv1)),
+    loops(X,Y,Z, NewEnv1,Final_State).
+loops(X,_Y,_Z, State, State) :- 
+    eval_bool(X, State, State,false).
+
+%to evaluate forrange
+eval_for_in_range(t_for_in_range(X,Y,Z,W), State,Final_State):- 
+    eval_tree(X,Identifier),
+    ((eval_numtree(Y, Val),update(int,Identifier, Val, State, New_State));
+    (lookup(Y, State, Val),update(int,Identifier, Val, State, New_State))),
+    ((eval_numtree(Z,N));
+    (eval_tree(Z,Id1),lookup(Id1, New_State,N))),
+    iterating(Identifier,N,W, New_State,Final_State).
+iterating(X,Z,W, State,Final_State):- 
+    lookup(X, State, Val),
+    Val < Z, 
+    eval_blk(W, State, New_State),
+    V1 is Val + 1,
+    update(int, X, V1, New_State, NewEnv1),
+    iterating(X,Z,W, NewEnv1,Final_State).
+iterating(X,Z,_W, State, State) :- 
+    lookup(X, State, Val), 
+    Val >= Z.
+
+%to evaluate ternary conditions
+eval_ternary_cond(t_ternary_condition(X,Y,_Z), State,Final_State):- 
+    (eval_cond(X, State, New_State,true);eval_bool(X, State, New_State,true)),
+    eval_stms(Y, New_State,Final_State).
+eval_ternary_cond(t_ternary_condition(X,_Y,Z), State,Final_State):- 
+    (eval_cond(X, State, New_State,false);eval_bool(X, State, New_State,false)),
+    eval_stms(Z, New_State,Final_State).
