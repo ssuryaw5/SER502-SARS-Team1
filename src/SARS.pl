@@ -327,3 +327,41 @@ eval_cond(t_condition(X,'<=',Y), State, New_State,_Val) :-
     T=string,
     eval_str(Y, State, New_State,_V2),
     write("Operation not allowed").
+
+%to evaluate print statements
+eval_print(t_print(X), State, State) :- 
+    eval_tree(X,Identifier),
+    lookup(Identifier, State, Val),
+    writeln(Val).
+eval_print(t_print(X), State, State) :- 
+    eval_numtree(X, Val),
+    writeln(Val).
+eval_print(t_print(X), State, State) :- 
+    eval_str(X, State, State, Val),
+    writeln(Val).
+
+%to evaluate if conditions
+eval_if(t_if_condition(X,Y), State,Final_State):- 
+    ((eval_cond(X, State, New_State,true);eval_bool(X, State, New_State,true)),eval_blk(Y, New_State,Final_State)).
+eval_if(t_if_condition(X,_Y), State, New_State):- 
+    eval_cond(X, State, New_State,false);eval_bool(X, State, New_State,false).
+eval_if(t_if_condition(X,Y,_Z), State,Final_State):- 
+    (eval_cond(X, State, New_State,true);eval_bool(X, State, New_State,true)),
+    eval_blk(Y, New_State,Final_State).
+eval_if(t_if_condition(X,_Y,Z), State,Final_State):- 
+    (eval_cond(X, State, New_State,false);eval_bool(X, State, New_State,false)),
+    eval_blk(Z, New_State,Final_State).
+
+%to evaluate while loops
+eval_while(t_whileloop(X,Y), State,Final_State):- 
+    eval_bool(X, State, New_State,true),
+    eval_blk(Y, New_State, NewEnv1),
+    eval_while(t_whileloop(X,Y), NewEnv1,Final_State).
+eval_while(t_whileloop(X,_Y), State, State) :- 
+    eval_bool(X, State, State,false).
+eval_while(t_whileloop(X,Y), State,Final_State):- 
+    eval_cond(X, State, New_State,true),
+    eval_blk(Y, New_State, NewEnv1),
+    eval_while(t_whileloop(X,Y), NewEnv1,Final_State).
+eval_while(t_whileloop(X,_Y), State, State) :- 
+    eval_cond(X, State, State,false).
