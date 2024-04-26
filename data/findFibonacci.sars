@@ -1,0 +1,17 @@
+begin
+{
+int a = 0;
+int b = 1;
+int itr = 0;
+
+while (itr < 8)
+{
+    int curr = a;
+    a = b;
+    b = curr + b;
+    print a;
+    itr = itr + 1;
+}
+
+}
+end

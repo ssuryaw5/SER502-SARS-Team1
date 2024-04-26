@@ -139,14 +139,14 @@ or(false, false, false).
 
 %lookup predicate to find the corresponding values from the States
 
-lookup(Identifier, [(Category, Identifier, P_holder)|], P_holder).
+lookup(Identifier, [(_Category, Identifier, P_holder)|_], P_holder).
 lookup(Identifier, [_|Tail], P_holder) :- 
     lookup(Identifier, Tail, P_holder).
 
 lookup_category(Identifier, [_|Tail], P_holder) :- 
     lookup_category(Identifier, Tail, P_holder).
 
-lookup_category(Identifier, [(Category,Identifier,X)|], Category).
+lookup_category(Identifier, [(Category,Identifier,_X)|_], Category).
 
 %update predicate to update the value of  identifier
 
