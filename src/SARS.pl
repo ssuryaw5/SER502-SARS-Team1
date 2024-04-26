@@ -427,3 +427,60 @@ eval_ternary_cond(t_ternary_condition(X,Y,_Z), State,Final_State):-
 eval_ternary_cond(t_ternary_condition(X,_Y,Z), State,Final_State):- 
     (eval_cond(X, State, New_State,false);eval_bool(X, State, New_State,false)),
     eval_stms(Z, New_State,Final_State).
+    
+%to evaluate the increment,decrement operations
+eval_iterate(t_incre(X), State, New_State) :- 
+    eval_tree(X,Identifier),
+    lookup_category(Identifier, State,int),
+    lookup(Identifier, State, Val),
+    V1 is Val + 1, 
+    update(int,Identifier, V1, State, New_State).
+eval_iterate(t_decre(X), State, New_State) :- 
+    eval_tree(X,Identifier),
+    lookup_category(Identifier, State,int),
+    lookup(Identifier, State, Val),
+    V1 is Val - 1, 
+    update(int,Identifier, V1, State, New_State).
+
+%to evaluate addition,subtraction,multiplication and division
+eval_expr(X, State, New_State) :- 
+    eval_assign(X, State, New_State).
+eval_expr(X, State, New_State, Val) :- 
+    eval_term(X, State, New_State, Val).
+eval_expr(t_sub(X,Y), State, New_State, Val):-
+    eval_expr(X, State, S1, V1),
+    eval_term(Y, S1, New_State, V2),
+    Val is V1 - V2.
+eval_term(X, State, New_State, Val) :- 
+    eval_term1(X, State, New_State, Val).
+eval_term(t_add(X,Y), State, New_State, Val):-
+    eval_term(X, State, S1, V1),
+    eval_term1(Y, S1, New_State, V2),
+    Val is V1 + V2.
+eval_term1(X, State, New_State, Val) :- 
+    eval_term2(X, State, New_State, Val).
+eval_term1(t_mult(X,Y), State, New_State, Val):-
+    eval_term1(X, State, S1, V1),
+    eval_term2(Y, S1, New_State, V2),
+    Val is V1 * V2.
+eval_term2(X, State, New_State, Val) :- 
+    eval_term3(X, State, New_State, Val).
+eval_term2(t_div(X,Y),  State, New_State, Val):-
+    eval_term2(X, State, S1, V1), 
+    eval_term3(Y, S1, New_State, V2),
+    Val is floor(V1 / V2).
+eval_term3(X,  State, New_State, Val) :- 
+    eval_num(X, State, New_State, Val).
+eval_term3(t_parentheses(X), State, New_State, Val):-
+    eval_expr(X, State, New_State, Val).
+
+%to evaluate numbers and strings
+eval_num(t_num(Val), State, State, Val).
+eval_num(identifier(I), State, State, Val) :-
+    term_to_atom(Identifier,I),
+    lookup(Identifier, State, Val).
+eval_numtree(t_num(Val), Val).
+eval_tree(identifier(I),Identifier):- 
+    term_to_atom(Identifier,I).
+eval_str(t_str(I), State, State, Val) :- 
+    atom_string(I, Val).
