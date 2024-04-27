@@ -1,19 +1,30 @@
 1.	Sumeet 
-Till now> Data types and Identifiers
+
+Milestone1-> Data types and Identifiers
+
+Milestone2 -> fibonacci, factorial, main sars predicate,predicate for print statement, predicate for conditional operations, while-loop, for-loop, for-in-loop
 
 2.	Rohan
 
-Till now> Variable Declaration and Loops
+Milestone1-> Variable Declaration and Loops
 
+Milestone2 -> For loop, arithmetic, ternary and while loop, program predicate, parse condition checks, process variation declaration predicate
 
 3.	Akash 
 
-Till now > Terminators and Conditionals
+Milestone1-> Terminators and Conditionals
 
+Milestone2 -> Addition, subtraction, multiplication, division, increment, decrement operations, lookup predicate and update predicate,if conditions, ternary operator, boolean conditions
 
 4.	Sadhanand 
 
-Till now > Operators and print
+Milestone1-> Operators and print
+
+Milestone2 -> Lexical Analyser, assignemnt operations and boolean expressions, number identifier and string, process assignment operation and datatypes.
+
+
+
+
 
 We have all worked on the grammar together and made the terminal and non-terminal rules. 
 

@@ -40,7 +40,7 @@ declaration(t_decint(int, X, Y)) --> ['int'], identifier(X), ['='], expression(Y
 declaration(t_decstr(string, X, Y)) --> ['string'], identifier(X), ['='], string(Y).
 declaration(t_decbool(bool, X, true)) --> ['bool'], identifier(X), [=], ['true'].
 declaration(t_decbool(bool, X, false)) --> ['bool'], identifier(X), [=], ['false'].
-declaration(t_declare(X, Y)) --> type(X), identifier(Y).
+declaration(t_declare(X, Y)) --> type(X), identifier(Y).
 
 
 %to process assignment operations
@@ -110,7 +110,7 @@ term(t_mult(X, Y)) --> term(X), ['*'], term(Y).
 term(t_div(X, Y)) --> term(X), ['/'], term(Y).
 term(X) --> ['('], expression(X), [')'].
 term(X) --> num(X).
-term(X) --> identifier(X).
+term(X) --> identifier(X).
 
 %to parse unary increment and decrement operation
 iterator(t_incre(X)) --> identifier(X), ['+'], ['+'] .
