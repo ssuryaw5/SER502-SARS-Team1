@@ -1,0 +1,54 @@
+begin
+{
+
+int x;
+int y;
+x = 7;
+y = 28;
+
+string str1=xNotEqualToY;
+string str2=xEqualToY;
+string str3=xGreaterThanEqualToY;
+string str4=xNotGreaterThanEqualToY;
+string str5=yGreaterThanEqualToX;
+string str6=yNotLessThanEqualToX;
+string str7=nothingWorks;
+
+if(x != y) 
+{
+print str1;
+}
+else
+{
+print str2;
+}
+
+if(x == y) 
+{
+print str2;
+}
+else
+{
+print str1;
+}
+
+if(x >= y) 
+{
+print str3;
+}
+else
+{
+print str4;
+}
+
+if(y <= x) 
+{
+print str5;
+}
+else
+{
+print str6;
+}
+
+}
+end
