@@ -1,0 +1,21 @@
+begin
+{
+int x = 10;
+int y = 20;
+int z = 2;
+int w = 5;
+
+int add = x+y;
+int sub = y-x;
+int mul = x*2;
+int div = x/2;
+
+int ans = 20+y/x-z*w;
+print add;
+print sub;
+print mul;
+print div;
+print ans;
+}
+
+end
