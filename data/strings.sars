@@ -1,0 +1,13 @@
+begin
+{
+int x = 7;
+string a=welcome;
+string b=to;
+string c=sars;
+
+print a;
+print b;
+print c;
+print x;
+}
+end
