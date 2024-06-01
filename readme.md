@@ -48,7 +48,3 @@ swipl
 ```bash
 ?- sars('/Users/user/Desktop/SER502-SARS-Team1/src/Lexer.py','/Users/user/Desktop/SER502-SARS-Team1/data/findFactorial.sars').
 ```
-
-```youtube link
-    https://youtu.be/iUs2S3pkhqc
-```
